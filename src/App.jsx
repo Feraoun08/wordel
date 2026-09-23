@@ -28,6 +28,8 @@ function App() {
 
   const [elapsedSeconds, setElapsedSeconds] = useState(null);
 
+  const [isInvalid, setIsInvalid] = useState(false);
+
   useEffect(() => {
     function handleKeyDown(e) {
       const key = e.key.toUpperCase();
@@ -45,22 +47,18 @@ function App() {
     return () => window.removeEventListener("keydown", handleKeyDown);}, [currentGuess, gameStatus]);
 
 
-  function isLetterKnownAbsent(letter) {
-  return guesses.some((guess) => {
-    const statuses = getGuessStatuses(guess, answer);
-    return guess.split("").some((l, i) => l === letter && statuses[i] === "absent");
-  });
-}
+   function triggerShake() {
+     setIsInvalid(true);
+    setTimeout(() => setIsInvalid(false), 500);
+     } 
 
   // Called when the player presses a letter key
-  function handleLetter(letter) {
-    if (gameStatus !== "playing") return;
-    if (currentGuess.length >= WORD_LENGTH) return;
-    if (isLetterKnownAbsent(letter)) return;
+ function handleLetter(letter) {
+  if (gameStatus !== "playing") return;
+  if (currentGuess.length >= WORD_LENGTH) return;
 
-    setCurrentGuess((prev) => prev + letter);
-  }
-
+  setCurrentGuess((prev) => prev + letter);
+ }
   // Called when the player presses backspace
   function handleBackspace() {
     setCurrentGuess((prev) => prev.slice(0, -1));
@@ -70,12 +68,12 @@ function App() {
     if (gameStatus !== "playing") return;
 
     if (currentGuess.length !== WORD_LENGTH) {
-      alert("Not enough letters, partner.");
+      triggerShake();
       return;
     }
 
     if (!VALID_WORDS.includes(currentGuess)) {
-      alert("That ain't a word we know.");
+      triggerShake();
       return;
     }
 
@@ -105,7 +103,7 @@ function App() {
           <img src={logoImg} alt="Bugs Bunny" className="logo" />
           <h1>Wordle Showdown</h1>
         </div>
-      <Board guesses={guesses} currentGuess={currentGuess} answer={answer} />
+      <Board guesses={guesses} currentGuess={currentGuess} answer={answer} isInvalid={isInvalid} />
       <Keyboard
         guesses={guesses}
         answer={answer}

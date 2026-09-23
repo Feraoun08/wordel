@@ -44,7 +44,7 @@ function getKeyStatus(letter) {
               key={key}
               className={`key ${key.length === 1 ? getKeyStatus(key) : "wide"}`}
               onClick={() => handleClick(key)}
-              disabled={key.length === 1 && getKeyStatus(key) === "absent"}
+             
             >
               {key === "BACKSPACE" ? "⌫" : key}
             </button>
