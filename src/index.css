@@ -1,0 +1,287 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Rye&display=swap");
+
+:root {
+  --bg: #2b1d12;           /* dark saddle brown background */
+  --wood: #4a3220;          /* medium wood brown */
+  --tan: #d9b98c;           /* desert tan */
+  --tan-dark: #b8935f;
+  --correct: #a1361c;       /* worn rust red = correct letter */
+  --present: #c99a2e;       /* tarnished gold = present letter */
+  --absent: #5a4a3a;        /* faded wood = absent letter */
+  --text: #f4e8d0;          /* parchment text */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-image: url("/background.jpg"); /* see note below */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* keeps it filling the screen even as content scrolls */
+  color: var(--text);
+  font-family: "Trebuchet MS", sans-serif;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  max-width: 500px;
+  width: 100%;
+}
+
+h1 {
+  font-family: "Rye", serif;
+  font-size: 1.8rem;
+  color: var(--tan);
+  text-shadow: 2px 2px 0 #000;
+  margin: 0; 
+}
+
+
+
+.board {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+
+.row {
+  display: flex;
+  gap: 6px;
+}
+
+.tile {
+  width: 56px;
+  height: 56px;
+  border: 2px solid var(--tan-dark);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  background: var(--wood);
+  color: var(--text);
+  transition: transform 0.15s ease, background 0.3s ease;
+}
+
+.tile.empty {
+  background: transparent;
+}
+
+.tile.correct {
+  background: var(--correct);
+  border-color: var(--correct);
+}
+
+.tile.present {
+  background: var(--present);
+  border-color: var(--present);
+  color: #2b1d12;
+}
+
+.tile.absent {
+  background: var(--absent);
+  border-color: var(--absent);
+}
+
+/* Small "pop" animation when a letter is typed — applies to any tile with a letter in it */
+.tile:not(.empty) {
+  transform: scale(1.03);
+}
+
+/* ---------- Keyboard ---------- */
+
+.keyboard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.key {
+  font-family: "Rye", serif;
+  min-width: 32px;
+  height: 46px;
+  padding: 0 10px;
+  border: none;
+  border-radius: 4px;
+  background: var(--tan);
+  color: #2b1d12;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.key:hover {
+  transform: translateY(-2px);
+}
+
+.key:active {
+  transform: translateY(0);
+}
+
+.key.wide {
+  min-width: 60px;
+  font-size: 0.75rem;
+}
+
+.key.correct {
+  background: var(--correct);
+  color: var(--text);
+}
+
+.key.present {
+  background: var(--present);
+  color: #2b1d12;
+}
+
+.key.absent {
+  background: var(--absent);
+  color: var(--text);
+}
+
+/* ---------- Modal ---------- */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.modal {
+  background: var(--wood);
+  border: 3px solid var(--tan);
+  border-radius: 10px;
+  padding: 30px 40px;
+  text-align: center;
+  color: var(--text);
+  animation: modal-pop 0.25s ease;
+}
+
+@keyframes modal-pop {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal h2 {
+  font-family: "Rye", serif;
+  margin-top: 0;
+}
+
+.modal-win {
+  border-color: var(--correct);
+}
+
+.modal-word strong {
+  color: var(--present);
+  letter-spacing: 2px;
+}
+
+.confetti {
+  font-family: "Rye", serif;
+  font-size: 1.8rem;
+  color: var(--tan);
+  text-shadow: 2px 2px 0 #000;
+  animation: confetti-bounce 0.6s ease infinite alternate;
+}
+
+@keyframes confetti-bounce {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-6px);
+  }
+}
+
+.play-again-btn {
+  margin-top: 16px;
+  font-family: "Rye", serif;
+  background: var(--tan);
+  color: #2b1d12;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.play-again-btn:hover {
+  transform: translateY(-2px);
+}
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  max-width: 500px;
+  width: 100%;
+  /* no background-image here anymore, no ::before overlay needed at this level */
+}
+
+
+.app::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: -1;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: -1;
+}
+.logo {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  border: 2px solid var(--tan);
+  flex-shrink: 0; /* stops flexbox from squishing OR stretching it */
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.modal-detail {
+  font-family: "Rye", serif;
+  color: var(--tan);
+  text-shadow: 2px 2px 0 #000;
+  font-size: 1.1rem; 
+}
